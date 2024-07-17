@@ -1,0 +1,124 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Schedule</title>
+</head>
+
+<body>
+    <h1>Generated Schedule</h1>
+    <table border="1">
+        <tr>
+            <th>Kode Kelompok</th>
+            <th>Nama Kelompok</th>
+            <th>Dosen</th>
+            <th>Time</th>
+            <th>Day</th>
+            <th>Room</th>
+            <th>Mahasiswa</th>
+            <th>Kelas</th>
+        </tr>
+        {% for seminar in schedule %}
+        <tr>
+            <td>{{ seminar.kode_kelompok }}</td>
+            <td>{{ seminar.nama_kelompok }}</td>
+            <td>{{ seminar.dosen }}</td>
+            <td>{{ seminar.time }}</td>
+            <td>{{ seminar.day }}</td>
+            <td>{{ seminar.room }}</td>
+            <td>{{ seminar.mahasiswa }}</td>
+            <td>{{ seminar.kelas }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('download_excel', schedule=schedule) }}">Download Schedule as Excel</a>
+</body>
+
+</html> -->
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Result</title>
+</head>
+<body>
+    <h1>Best Individual Schedule</h1>
+    <pre>{{ best_individual }}</pre>
+    <h2>Best Fitness Score: {{ best_fitness }}</h2>
+    <h2>Accuracy: {{ accuracy }}%</h2>
+    <h2>Error History</h2>
+    <img src="data:image/png;base64,{{ error_history_plot }}" alt="Error History Plot">
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seminar Scheduler</title>
+</head>
+<body>
+    <h1>Jadwal Seminar</h1>
+    <h2>Informasi Jadwal</h2>
+    <p>Akurasi Terbaik: {{ best_accuracy }}%</p>
+    <p>Fitness Terbaik: {{ best_fitness }}</p>
+    <p>Jumlah Iterasi: {{ num_iterations }}</p>
+    <p>Waktu yang Dihabiskan: {{ elapsed_time }} detik</p>
+    <a href="{{ url_for('download_schedule') }}">Unduh Jadwal</a><br>
+    <a href="{{ url_for('plot_fitness') }}">Plot Fitness Over Time</a><br>
+
+    <h2>Jadwal Seminar</h2>
+    <table border="1">
+        <tr>
+            <th>Kelompok</th>
+            <th>Nama Kelompok</th>
+            <th>Dosen Pembimbing 1</th>
+            <th>Dosen Pembimbing 2</th>
+            <th>Dosen Penguji 1</th>
+            <th>Dosen Penguji 2</th>
+            <th>Waktu</th>
+            <th>Ruangan</th>
+            <th>Hari</th>
+        </tr>
+        {% for seminar in schedule %}
+        <tr>
+            <td>{{ seminar.kode_kelompok }}</td>
+            <td>{{ seminar.nama_kelompok }}</td>
+            <td>{{ seminar.dosen_pembimbing_1 }}</td>
+            <td>{{ seminar.dosen_pembimbing_2 }}</td>
+            <td>{{ seminar.dosen_penguji_1 }}</td>
+            <td>{{ seminar.dosen_penguji_2 }}</td>
+            <td>{{ seminar.time }}</td>
+            <td>{{ seminar.room }}</td>
+            <td>{{ seminar.day }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if conflicts %}
+    <h2>Hasil Pengecekan Jadwal</h2>
+    <table border="1">
+        <tr>
+            <th>Kelompok 1</th>
+            <th>Kelompok 2</th>
+            <th>Waktu</th>
+            <th>Hari</th>
+            <th>Ruangan</th>
+        </tr>
+        {% for conflict in conflicts %}
+        <tr>
+            <td>{{ conflict.seminar1 }}</td>
+            <td>{{ conflict.seminar2 }}</td>
+            <td>{{ conflict.time }}</td>
+            <td>{{ conflict.day }}</td>
+            <td>{{ conflict.room }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <form action="/regenerate_schedule" method="post">
+        <input type="submit" value="Generate Jadwal Lagi">
+    </form>
+    {% endif %}
+</body>
+</html>

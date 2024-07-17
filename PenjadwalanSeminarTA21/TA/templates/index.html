@@ -1,0 +1,185 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jadwal Seminar</title>
+</head>
+<body>
+    <h1>Jadwal Seminar</h1>
+    <form action="{{ url_for('upload_data') }}" method="post" enctype="multipart/form-data">
+        <p>Unggah Data Kelompok: <input type="file" name="kelompok"></p>
+        <p>Unggah Data Hari: <input type="file" name="hari"></p>
+        <p>Unggah Jadwal Dosen: <input type="file" name="jadwal_dosen"></p>
+        <p>Unggah Jadwal Mahasiswa: <input type="file" name="jadwal_mahasiswa"></p>
+        <p>Unggah Data Ruangan: <input type="file" name="ruangan"></p>
+        <p>Tanggal Mulai: <input type="date" name="tanggal_mulai"></p>
+        <p>Tanggal Selesai: <input type="date" name="tanggal_selesai"></p>
+        <input type="submit" value="Unggah">
+    </form>
+    
+    {% if schedule %}
+        <h2>Jadwal Seminar</h2>
+        <table border="1">
+            <tr>
+                <th>Kelompok</th>
+                <th>Nama Kelompok</th>
+                <th>Dosen Pembimbing 1</th>
+                <th>Dosen Pembimbing 2</th>
+                <th>Dosen Penguji 1</th>
+                <th>Dosen Penguji 2</th>
+                <th>Waktu</th>
+                <th>Ruangan</th>
+                <th>Hari</th>
+            </tr>
+            {% for seminar in schedule %}
+                <tr>
+                    <td>{{ seminar.kode_kelompok }}</td>
+                    <td>{{ seminar.nama_kelompok }}</td>
+                    <td>{{ seminar.dosen_pembimbing_1 }}</td>
+                    <td>{{ seminar.dosen_pembimbing_2 }}</td>
+                    <td>{{ seminar.dosen_penguji_1 }}</td>
+                    <td>{{ seminar.dosen_penguji_2 }}</td>
+                    <td>{{ seminar.time }}</td>
+                    <td>{{ seminar.room }}</td>
+                    <td>{{ seminar.day }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Informasi Jadwal</h2>
+        <p>Akurasi: {{ best_accuracy }}%</p>
+        <p>Fitness Terbaik: {{ best_fitness }}</p>
+        <p>Populasi Terbaik: {{ best_population }}</p>
+        <p>Jumlah Iterasi: {{ num_iterations }}</p>
+        <p>Waktu yang Dihabiskan: {{ elapsed_time }} detik</p>
+
+        <h2>Hasil Pengecekan Jadwal</h2>
+        {% if conflicts %}
+            <table border="1">
+                <tr>
+                    <th>Seminar 1</th>
+                    <th>Seminar 2</th>
+                    <th>Waktu</th>
+                    <th>Hari</th>
+                    <th>Ruangan</th>
+                </tr>
+                {% for conflict in conflicts %}
+                    <tr>
+                        <td>{{ conflict.seminar1 }}</td>
+                        <td>{{ conflict.seminar2 }}</td>
+                        <td>{{ conflict.time }}</td>
+                        <td>{{ conflict.day }}</td>
+                        <td>{{ conflict.room }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Tidak ada konflik dalam jadwal.</p>
+        {% endif %}
+        
+        <a href="{{ url_for('plot_fitness') }}">Lihat Grafik Fitness</a>
+        <a href="{{ url_for('download_schedule') }}">Unduh Jadwal</a>
+    {% else %}
+        <p>Jadwal belum tersedia.</p>
+    {% endif %}
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Genetic Algorithm Seminar Scheduler</title>
+</head>
+
+<body>
+    <h1>Genetic Algorithm Seminar Scheduler</h1>
+
+    <h2>Unggah File</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="kelompok">Kelompok:</label>
+        <input type="file" id="kelompok" name="kelompok"><br><br>
+
+        <label for="hari">Hari:</label>
+        <input type="file" id="hari" name="hari"><br><br>
+
+        <label for="jadwal_dosen">Jadwal Dosen:</label>
+        <input type="file" id="jadwal_dosen" name="jadwal_dosen"><br><br>
+
+        <label for="jadwal_mahasiswa">Jadwal Mahasiswa:</label>
+        <input type="file" id="jadwal_mahasiswa" name="jadwal_mahasiswa"><br><br>
+
+        <label for="ruangan">Ruangan:</label>
+        <input type="file" id="ruangan" name="ruangan"><br><br>
+
+        <label for="tanggal_mulai">Tanggal Mulai:</label>
+        <input type="date" id="tanggal_mulai" name="tanggal_mulai"><br><br>
+
+        <label for="tanggal_selesai">Tanggal Selesai:</label>
+        <input type="date" id="tanggal_selesai" name="tanggal_selesai"><br><br>
+
+        <button type="submit">Unggah</button>
+    </form>
+
+    {% if schedule %}
+    <h2>Jadwal Seminar</h2>
+    <table border="1">
+        <tr>
+            <th>Kelompok</th>
+            <th>Nama Kelompok</th>
+            <th>Dosen Pembimbing 1</th>
+            <th>Dosen Pembimbing 2</th>
+            <th>Dosen Penguji 1</th>
+            <th>Dosen Penguji 2</th>
+            <th>Waktu</th>
+            <th>Ruangan</th>
+            <th>Hari</th>
+        </tr>
+        {% for seminar in schedule %}
+        <tr>
+            <td>{{ seminar.kode_kelompok }}</td>
+            <td>{{ seminar.nama_kelompok }}</td>
+            <td>{{ seminar.dosen_pembimbing_1 }}</td>
+            <td>{{ seminar.dosen_pembimbing_2 }}</td>
+            <td>{{ seminar.dosen_penguji_1 }}</td>
+            <td>{{ seminar.dosen_penguji_2 }}</td>
+            <td>{{ seminar.time }}</td>
+            <td>{{ seminar.room }}</td>
+            <td>{{ seminar.day }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Informasi Jadwal</h2>
+    <p>Best Accuracy: {{ best_accuracy }}%</p>
+    <p>Best Fitness: {{ best_fitness }}</p>
+    <p>Number of Iterations: {{ num_iterations }}</p>
+    <p>Elapsed Time: {{ elapsed_time }} seconds</p>
+
+    <h2>Hasil Pengecekan Jadwal</h2>
+    {% if schedule and conflicts %}
+    <ul>
+        {% for conflict in conflicts %}
+        <li>Bentrok antara {{ conflict.seminar1.nama_kelompok }} dan {{ conflict.seminar2.nama_kelompok }} pada {{
+            conflict.seminar1.time }} di ruangan {{ conflict.seminar1.room }} pada hari {{ conflict.seminar1.day }}</li>
+        {% endfor %}
+    </ul>
+    <form action="{{ url_for('generate_new_schedule') }}" method="get">
+        <button type="submit">Generate Jadwal Lagi</button>
+    </form>
+    {% elif schedule %}
+    <p>Tidak ada bentrokan dalam jadwal.</p>
+    {% endif %}
+
+    <h2>Download Jadwal</h2>
+    <form action="{{ url_for('download_schedule') }}" method="get">
+        <button type="submit">Download Jadwal</button>
+    </form>
+
+    <h2>Plot Fitness</h2>
+    <form action="{{ url_for('plot_fitness') }}" method="get">
+        <button type="submit">Tampilkan Plot Fitness</button>
+    </form>
+    {% endif %}
+</body>
+
+</html>
